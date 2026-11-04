@@ -426,7 +426,7 @@ const LOGIN_HTML_CONTENT = `<!DOCTYPE html>
 <script>
     function showAlert(msg, isError=true) {
         const alert = document.getElementById('alertBox');
-        alert.innerHTML = `<i class="fas \${isError ? 'fa-exclamation-circle' : 'fa-check-circle'}"></i> \${msg}`;
+        alert.innerHTML = `<i class="fas ${isError ? 'fa-exclamation-circle' : 'fa-check-circle'}"></i> ${msg}`;
         alert.style.display = 'block';
         setTimeout(() => alert.style.display = 'none', 4000);
     }
@@ -754,7 +754,7 @@ const INDEX_HTML_CONTENT = `<!DOCTYPE html>
     }
     function showToast(msg, isSuccess = false) {
         const toast = document.getElementById('toast');
-        toast.innerHTML = \`<i class="fas \${isSuccess ? 'fa-check-circle' : 'fa-info-circle'}"></i> \${msg}\`;
+        toast.innerHTML = `<i class="fas ${isSuccess ? 'fa-check-circle' : 'fa-info-circle'}"></i> ${msg}`;
         toast.style.display = 'block';
         setTimeout(() => toast.style.display = 'none', 3000);
     }
@@ -805,11 +805,11 @@ const INDEX_HTML_CONTENT = `<!DOCTYPE html>
             const res = await fetch('/api/servers');
             const data = await res.json();
             if(!data.success) return;
-            document.getElementById('usedServers').innerHTML = \`\${data.stats.used}/\${data.stats.total || 2}\`;
-            document.getElementById('expiryDays').innerHTML = \`\${data.stats.expiry || '--'} يوم\`;
+            document.getElementById('usedServers').innerHTML = `${data.stats.used}/${data.stats.total || 2}`;
+            document.getElementById('expiryDays').innerHTML = `${data.stats.expiry || '--'} يوم`;
             const diskTotal = data.stats.disk_total || 512000;
             const diskUsed = data.stats.disk_used || 0;
-            document.getElementById('diskUsed').innerHTML = \`\${Math.round(diskUsed)}/\${Math.round(diskTotal/1024)} MB\`;
+            document.getElementById('diskUsed').innerHTML = `${Math.round(diskUsed)}/${Math.round(diskTotal/1024)} MB`;
             document.getElementById('diskProgress').style.width = Math.min((diskUsed/diskTotal)*100, 100) + '%';
             const grid = document.getElementById('serversGrid');
             if(!data.servers || data.servers.length === 0) {
@@ -822,35 +822,35 @@ const INDEX_HTML_CONTENT = `<!DOCTYPE html>
                 const typeClass = s.server_type === 'Node.js' ? 'nodejs' : 'python';
                 const card = document.createElement('div');
                 card.className = 'server-card';
-                card.innerHTML = \`
+                card.innerHTML = `
                     <div class="server-card-header">
-                        <div class="server-icon \${typeClass}">\${typeIcon}</div>
-                        <div class="server-status \${s.status==='Running'?'status-online':'status-offline'}">
-                            <span class="status-dot \${s.status==='Running'?'dot-online':'dot-offline'}"></span>\${s.status==='Running'?'يعمل':'متوقف'}
+                        <div class="server-icon ${typeClass}">${typeIcon}</div>
+                        <div class="server-status ${s.status==='Running'?'status-online':'status-offline'}">
+                            <span class="status-dot ${s.status==='Running'?'dot-online':'dot-offline'}"></span>${s.status==='Running'?'يعمل':'متوقف'}
                         </div>
                     </div>
-                    <div class="server-name">\${escapeHtml(s.title)}</div>
+                    <div class="server-name">${escapeHtml(s.title)}</div>
                     <div class="server-meta">
-                        <span><i class="fas fa-plug"></i> المنفذ: \${s.port||'N/A'}</span>
-                        <span><i class="fas fa-tag"></i> \${s.plan==='free'?'مجاني':s.plan}</span>
+                        <span><i class="fas fa-plug"></i> المنفذ: ${s.port||'N/A'}</span>
+                        <span><i class="fas fa-tag"></i> ${s.plan==='free'?'مجاني':s.plan}</span>
                     </div>
                     <div class="server-stats">
-                        <span><i class="fas fa-hdd"></i> \${Math.round((s.storage_limit||512000)/1024)} MB</span>
-                        <span><i class="fas fa-microchip"></i> \${s.cpu_limit||0.5}</span>
-                        <span><i class="fas fa-clock"></i> \${s.uptime || '0'}</span>
+                        <span><i class="fas fa-hdd"></i> ${Math.round((s.storage_limit||512000)/1024)} MB</span>
+                        <span><i class="fas fa-microchip"></i> ${s.cpu_limit||0.5}</span>
+                        <span><i class="fas fa-clock"></i> ${s.uptime || '0'}</span>
                     </div>
                     <div class="server-actions">
                         <div class="action-group">
-                            <button class="action-btn start" data-action="start" data-folder="\${s.folder}"><i class="fas fa-play"></i> تشغيل</button>
-                            <button class="action-btn restart" data-action="restart" data-folder="\${s.folder}"><i class="fas fa-sync-alt"></i> إعادة</button>
-                            <button class="action-btn stop" data-action="stop" data-folder="\${s.folder}"><i class="fas fa-stop"></i> إيقاف</button>
+                            <button class="action-btn start" data-action="start" data-folder="${s.folder}"><i class="fas fa-play"></i> تشغيل</button>
+                            <button class="action-btn restart" data-action="restart" data-folder="${s.folder}"><i class="fas fa-sync-alt"></i> إعادة</button>
+                            <button class="action-btn stop" data-action="stop" data-folder="${s.folder}"><i class="fas fa-stop"></i> إيقاف</button>
                         </div>
                         <div class="action-group">
-                            <button class="action-btn delete" data-action="delete" data-folder="\${s.folder}"><i class="fas fa-trash"></i> حذف</button>
-                            <button class="action-btn detail" data-action="detail" data-folder="\${s.folder}"><i class="fas fa-chevron-left"></i> تفاصيل</button>
+                            <button class="action-btn delete" data-action="delete" data-folder="${s.folder}"><i class="fas fa-trash"></i> حذف</button>
+                            <button class="action-btn detail" data-action="detail" data-folder="${s.folder}"><i class="fas fa-chevron-left"></i> تفاصيل</button>
                         </div>
                     </div>
-                \`;
+                `;
                 card.onclick = (e) => { if(!e.target.closest('.action-btn')) openServer(s); };
                 card.querySelectorAll('.action-btn').forEach(btn => {
                     btn.onclick = (e) => {
@@ -867,9 +867,9 @@ const INDEX_HTML_CONTENT = `<!DOCTYPE html>
     }
     async function performAction(folder, action) {
         if(action === 'delete' && !confirm('⚠️ حذف الخادم نهائياً؟')) return;
-        showToast(\`جاري \${action}...\`);
+        showToast(`جاري ${action}...`);
         try {
-            const res = await fetch(\`/api/server/action/\${folder}/\${action}\`, { method: 'POST' });
+            const res = await fetch(`/api/server/action/${folder}/${action}`, { method: 'POST' });
             const data = await res.json();
             if(data.success) {
                 showToast(data.message || 'تم بنجاح', true);
@@ -883,7 +883,7 @@ const INDEX_HTML_CONTENT = `<!DOCTYPE html>
         document.getElementById('homeView').style.display = 'none';
         document.getElementById('detailView').classList.add('active');
         const typeIcon = server.server_type === 'Node.js' ? '<i class="fab fa-node-js"></i>' : '<i class="fab fa-python"></i>';
-        document.getElementById('serverTypeBadge').innerHTML = \`\${typeIcon} \${server.server_type || 'Python'} | \${escapeHtml(server.title)}\`;
+        document.getElementById('serverTypeBadge').innerHTML = `${typeIcon} ${server.server_type || 'Python'} | ${escapeHtml(server.title)}`;
         document.getElementById('ramLimit').innerHTML = (server.ram_limit || 256) + ' MB';
         document.getElementById('storageLimit').innerHTML = Math.round((server.storage_limit || 512000)/1024) + ' MB';
         document.getElementById('planDetails').innerHTML = server.plan === 'free' ? 'مجاني' : server.plan;
@@ -899,24 +899,24 @@ const INDEX_HTML_CONTENT = `<!DOCTYPE html>
     async function loadServerStats() {
         if(!currentServer) return;
         try {
-            const res = await fetch(\`/api/server/stats/\${currentServer.folder}\`);
+            const res = await fetch(`/api/server/stats/${currentServer.folder}`);
             const data = await res.json();
             if(!data.success) return;
             const consoleOut = document.getElementById('consoleOut');
-            consoleOut.innerHTML = (data.logs || 'لا توجد مخرجات').split('\\n').map(l => \`<div>\${escapeHtml(l)}</div>\`).join('');
+            consoleOut.innerHTML = (data.logs || 'لا توجد مخرجات').split('\n').map(l => `<div>${escapeHtml(l)}</div>`).join('');
             consoleOut.scrollTop = consoleOut.scrollHeight;
             const ramLimit = currentServer.ram_limit || 256;
             const mem = parseFloat(data.mem) || 0;
-            document.getElementById('ramStat').innerHTML = \`\${mem} / \${ramLimit} MB\`;
+            document.getElementById('ramStat').innerHTML = `${mem} / ${ramLimit} MB`;
             document.getElementById('ramDetailProgress').style.width = Math.min((mem/ramLimit)*100, 100) + '%';
             document.getElementById('uptimeStat').innerHTML = data.uptime || '0';
         } catch(e) {}
     }
     async function serverAction(action) {
         if(action === 'delete') { confirmDelete(); return; }
-        showToast(\`جاري \${action}...\`);
+        showToast(`جاري ${action}...`);
         try {
-            const res = await fetch(\`/api/server/action/\${currentServer.folder}/\${action}\`, { method: 'POST' });
+            const res = await fetch(`/api/server/action/${currentServer.folder}/${action}`, { method: 'POST' });
             const data = await res.json();
             if(data.success) {
                 showToast(data.message, true);
@@ -927,7 +927,7 @@ const INDEX_HTML_CONTENT = `<!DOCTYPE html>
     }
     function confirmDelete() {
         showConfirm('⚠️ حذف الخادم نهائياً؟ لا يمكن التراجع', async () => {
-            const res = await fetch(\`/api/server/action/\${currentServer.folder}/delete\`, { method: 'POST' });
+            const res = await fetch(`/api/server/action/${currentServer.folder}/delete`, { method: 'POST' });
             const data = await res.json();
             if(data.success) {
                 showToast('تم الحذف', true);
@@ -949,7 +949,7 @@ const INDEX_HTML_CONTENT = `<!DOCTYPE html>
             document.querySelectorAll('.tab-nav-btn').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
             document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
-            document.getElementById(\`\${tab}Tab\`).classList.add('active');
+            document.getElementById(`${tab}Tab`).classList.add('active');
             if(tab === 'files') loadFiles();
             if(tab === 'settings') loadStartupFiles();
             if(tab === 'api') loadApiKey();
@@ -960,30 +960,30 @@ const INDEX_HTML_CONTENT = `<!DOCTYPE html>
         const tbody = document.getElementById('filesList');
         tbody.innerHTML = '<tr><td colspan="4">جاري...</td></tr>';
         try {
-            const res = await fetch(\`/api/files/list/\${currentServer.folder}\`);
+            const res = await fetch(`/api/files/list/${currentServer.folder}`);
             const files = await res.json();
             if(files.length === 0) {
                 tbody.innerHTML = '<tr><td colspan="4">لا توجد ملفات</td></tr>';
                 return;
             }
-            tbody.innerHTML = files.map(f => \`
+            tbody.innerHTML = files.map(f => `
                 <tr>
-                    <td><i class="fas \${f.is_dir ? 'fa-folder' : 'fa-file'}"></i></td>
-                    <td>\${escapeHtml(f.name)}</td>
-                    <td>\${f.size}</td>
+                    <td><i class="fas ${f.is_dir ? 'fa-folder' : 'fa-file'}"></i></td>
+                    <td>${escapeHtml(f.name)}</td>
+                    <td>${f.size}</td>
                     <td>
-                        \${!f.is_dir ? \`<button class="action-btn" onclick="editFile('\${escapeHtml(f.name)}')"><i class="fas fa-edit"></i></button>\` : ''}
-                        <button class="action-btn" onclick="renameFile('\${escapeHtml(f.name)}')"><i class="fas fa-i-cursor"></i></button>
-                        \${f.name.toLowerCase().endsWith('.zip') ? \`<button class="action-btn" onclick="unzipFile('\${escapeHtml(f.name)}')"><i class="fas fa-file-archive"></i></button>\` : ''}
-                        <button class="action-btn" onclick="deleteFile('\${escapeHtml(f.name)}')" style="color:#ff5e7c;"><i class="fas fa-trash"></i></button>
+                        ${!f.is_dir ? `<button class="action-btn" onclick="editFile('${escapeHtml(f.name)}')"><i class="fas fa-edit"></i></button>` : ''}
+                        <button class="action-btn" onclick="renameFile('${escapeHtml(f.name)}')"><i class="fas fa-i-cursor"></i></button>
+                        ${f.name.toLowerCase().endsWith('.zip') ? `<button class="action-btn" onclick="unzipFile('${escapeHtml(f.name)}')"><i class="fas fa-file-archive"></i></button>` : ''}
+                        <button class="action-btn" onclick="deleteFile('${escapeHtml(f.name)}')" style="color:#ff5e7c;"><i class="fas fa-trash"></i></button>
                     </td>
                 </tr>
-            \`).join('');
+            `).join('');
         } catch(e) { tbody.innerHTML = '<tr><td colspan="4">خطأ</td></tr>'; }
     }
     function editFile(name) {
         currentEditFile = name;
-        fetch(\`/api/files/content/\${currentServer.folder}/\${name}\`)
+        fetch(`/api/files/content/${currentServer.folder}/${name}`)
             .then(res => res.json())
             .then(data => {
                 document.getElementById('editorContent').value = data.content || '';
@@ -992,7 +992,7 @@ const INDEX_HTML_CONTENT = `<!DOCTYPE html>
     }
     function saveFile() {
         const content = document.getElementById('editorContent').value;
-        fetch(\`/api/files/save/\${currentServer.folder}/\${currentEditFile}\`, {
+        fetch(`/api/files/save/${currentServer.folder}/${currentEditFile}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ content })
@@ -1004,8 +1004,8 @@ const INDEX_HTML_CONTENT = `<!DOCTYPE html>
     }
     function closeEditorModal() { document.getElementById('editorModal').classList.remove('active'); }
     function deleteFile(name) {
-        showConfirm(\`حذف \${name}؟\`, async () => {
-            await fetch(\`/api/files/delete/\${currentServer.folder}\`, {
+        showConfirm(`حذف ${name}؟`, async () => {
+            await fetch(`/api/files/delete/${currentServer.folder}`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ names: [name] })
@@ -1016,7 +1016,7 @@ const INDEX_HTML_CONTENT = `<!DOCTYPE html>
     function renameFile(name) {
         const newName = prompt('أدخل الاسم الجديد:', name);
         if(newName && newName !== name) {
-            fetch(\`/api/files/rename/\${currentServer.folder}\`, {
+            fetch(`/api/files/rename/${currentServer.folder}`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ old_name: name, new_name: newName })
@@ -1027,7 +1027,7 @@ const INDEX_HTML_CONTENT = `<!DOCTYPE html>
         if(!files.length) return;
         const fd = new FormData();
         for(let f of files) fd.append('files[]', f);
-        fetch(\`/api/files/upload/\${currentServer.folder}\`, { method: 'POST', body: fd })
+        fetch(`/api/files/upload/${currentServer.folder}`, { method: 'POST', body: fd })
             .then(() => { loadFiles(); showToast('تم رفع الملفات وفك ضغطها بنجاح', true); });
     }
     function handleDrop(e) {
@@ -1036,11 +1036,11 @@ const INDEX_HTML_CONTENT = `<!DOCTYPE html>
     }
     function unzipFile(name) {
         showToast('جاري فك الضغط...');
-        fetch(\`/api/files/unzip/\${currentServer.folder}/\${name}\`, { method: 'POST' })
+        fetch(`/api/files/unzip/${currentServer.folder}/${name}`, { method: 'POST' })
             .then(() => { loadFiles(); showToast('تم فك الضغط', true); });
     }
     function installPackages() {
-        fetch(\`/api/server/install/\${currentServer.folder}\`, { method: 'POST' })
+        fetch(`/api/server/install/${currentServer.folder}`, { method: 'POST' })
             .then(res => res.json())
             .then(data => showToast(data.message, data.success));
     }
@@ -1053,7 +1053,7 @@ const INDEX_HTML_CONTENT = `<!DOCTYPE html>
         const name = document.getElementById('newFileName').value.trim();
         const content = document.getElementById('newFileContent').value;
         if(!name) return;
-        fetch(\`/api/files/create/\${currentServer.folder}\`, {
+        fetch(`/api/files/create/${currentServer.folder}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ filename: name, content })
@@ -1070,7 +1070,7 @@ const INDEX_HTML_CONTENT = `<!DOCTYPE html>
     function createNewFolder() {
         const name = document.getElementById('newFolderName').value.trim();
         if(!name) return;
-        fetch(\`/api/files/create/\${currentServer.folder}\`, {
+        fetch(`/api/files/create/${currentServer.folder}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ filename: name, content: '' })
@@ -1081,18 +1081,18 @@ const INDEX_HTML_CONTENT = `<!DOCTYPE html>
     }
     async function loadStartupFiles() {
         if(!currentServer) return;
-        const res = await fetch(\`/api/files/list/\${currentServer.folder}\`);
+        const res = await fetch(`/api/files/list/${currentServer.folder}`);
         const files = await res.json();
         const ext = currentServer.server_type === 'Node.js' ? '.js' : '.py';
         const codeFiles = files.filter(f => f.name.endsWith(ext) && !f.is_dir);
         const select = document.getElementById('startupFileSelect');
         select.innerHTML = '<option value="">-- اختر ملف التشغيل --</option>' +
-            codeFiles.map(f => \`<option value="\${f.name}" \${currentServer.startup_file === f.name ? 'selected' : ''}>\${f.name}</option>\`).join('');
+            codeFiles.map(f => `<option value="${f.name}" ${currentServer.startup_file === f.name ? 'selected' : ''}>${f.name}</option>`).join('');
     }
     function setStartupFile() {
         const filename = document.getElementById('startupFileSelect').value;
         if(!filename) return;
-        fetch(\`/api/server/set-startup/\${currentServer.folder}\`, {
+        fetch(`/api/server/set-startup/${currentServer.folder}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ filename })
@@ -1336,7 +1336,7 @@ const ADMIN_HTML_CONTENT = `<!DOCTYPE html>
     let serversChart = null;
     const showToast = (msg, type = 'info') => {
         const t = document.getElementById('toast');
-        t.innerHTML = \`<i class="fas \${type === 'success' ? 'fa-check-circle' : 'fa-info-circle'}"></i> \${msg}\`;
+        t.innerHTML = `<i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-info-circle'}"></i> ${msg}`;
         t.style.display = 'block';
         setTimeout(() => t.style.display = 'none', 3000);
     };
@@ -1361,7 +1361,7 @@ const ADMIN_HTML_CONTENT = `<!DOCTYPE html>
                 document.getElementById('totalUsers').innerText = data.users.length;
                 let totalServers = 0, activeServers = 0, totalDisk = 0;
                 for (const user of data.users) {
-                    const userServers = await fetch(\`/api/servers?user=\${encodeURIComponent(user.username)}\`).then(r => r.json());
+                    const userServers = await fetch(`/api/servers?user=${encodeURIComponent(user.username)}`).then(r => r.json());
                     if (userServers.servers) {
                         totalServers += userServers.servers.length;
                         activeServers += userServers.servers.filter(s => s.status === 'Running').length;
@@ -1380,19 +1380,19 @@ const ADMIN_HTML_CONTENT = `<!DOCTYPE html>
             const res = await fetch('/api/admin/users');
             const data = await res.json();
             const list = document.getElementById('usersList');
-            list.innerHTML = data.users.map(u => \`
+            list.innerHTML = data.users.map(u => `
                 <tr>
-                    <td><strong>\${escapeHtml(u.username)}</strong></td>
-                    <td><span class="badge \${u.is_admin ? 'badge-admin' : 'badge-user'}">\${u.is_admin ? '👑 مسؤول' : '👤 مستخدم'}</span></td>
-                    <td>\${u.plan || 'free'}</td>
-                    <td>\${u.max_servers}</td>
-                    <td>\${u.expiry_days} يوم</td>
-                    <td style="font-size:11px;">\${(u.created_at || '').substring(0,10)}</td>
+                    <td><strong>${escapeHtml(u.username)}</strong></td>
+                    <td><span class="badge ${u.is_admin ? 'badge-admin' : 'badge-user'}">${u.is_admin ? '👑 مسؤول' : '👤 مستخدم'}</span></td>
+                    <td>${u.plan || 'free'}</td>
+                    <td>${u.max_servers}</td>
+                    <td>${u.expiry_days} يوم</td>
+                    <td style="font-size:11px;">${(u.created_at || '').substring(0,10)}</td>
                     <td>
-                        \${!u.is_admin ? \`<button class="action-btn delete" onclick="deleteUser('\${escapeHtml(u.username)}')"><i class="fas fa-trash"></i></button>\` : '<span style="color:#9ca3cf;">محمي</span>'}
+                        ${!u.is_admin ? `<button class="action-btn delete" onclick="deleteUser('${escapeHtml(u.username)}')"><i class="fas fa-trash"></i></button>` : '<span style="color:#9ca3cf;">محمي</span>'}
                     </td>
                 </tr>
-            \`).join('');
+            `).join('');
             document.getElementById('userSearch').oninput = function() {
                 const q = this.value.toLowerCase();
                 list.querySelectorAll('tr').forEach(r => {
@@ -1409,7 +1409,7 @@ const ADMIN_HTML_CONTENT = `<!DOCTYPE html>
             const data = await res.json();
             let allServers = [];
             for (const user of data.users) {
-                const serversRes = await fetch(\`/api/servers?user=\${encodeURIComponent(user.username)}\`);
+                const serversRes = await fetch(`/api/servers?user=${encodeURIComponent(user.username)}`);
                 const serversData = await serversRes.json();
                 if (serversData.servers) {
                     serversData.servers.forEach(s => {
@@ -1421,16 +1421,16 @@ const ADMIN_HTML_CONTENT = `<!DOCTYPE html>
                 tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;">لا توجد سيرفرات</td></tr>';
                 return;
             }
-            tbody.innerHTML = allServers.map(s => \`
+            tbody.innerHTML = allServers.map(s => `
                 <tr>
-                    <td>\${escapeHtml(s.title || s.name)}</td>
-                    <td>\${escapeHtml(s.owner)}</td>
-                    <td>\${s.server_type || 'Python'}</td>
-                    <td><span class="badge \${s.status === 'Running' ? 'badge-admin' : ''}" style="\${s.status !== 'Running' ? 'background:#555;' : ''}">\${s.status === 'Running' ? '🟢 نشط' : '⚫ متوقف'}</span></td>
-                    <td style="font-size:11px;">\${(s.created_at || '').substring(0,10)}</td>
-                    <td><button class="action-btn delete" onclick="deleteServer('\${s.folder}')"><i class="fas fa-trash"></i></button></td>
+                    <td>${escapeHtml(s.title || s.name)}</td>
+                    <td>${escapeHtml(s.owner)}</td>
+                    <td>${s.server_type || 'Python'}</td>
+                    <td><span class="badge ${s.status === 'Running' ? 'badge-admin' : ''}" style="${s.status !== 'Running' ? 'background:#555;' : ''}">${s.status === 'Running' ? '🟢 نشط' : '⚫ متوقف'}</span></td>
+                    <td style="font-size:11px;">${(s.created_at || '').substring(0,10)}</td>
+                    <td><button class="action-btn delete" onclick="deleteServer('${s.folder}')"><i class="fas fa-trash"></i></button></td>
                 </tr>
-            \`).join('');
+            `).join('');
             document.getElementById('serverSearch').oninput = function() {
                 const q = this.value.toLowerCase();
                 tbody.querySelectorAll('tr').forEach(r => {
@@ -1450,14 +1450,14 @@ const ADMIN_HTML_CONTENT = `<!DOCTYPE html>
                     const planDiv = document.createElement('div');
                     planDiv.className = 'stat-card';
                     planDiv.style.cssText = 'background:rgba(15,23,42,0.5); border-radius:20px; padding:16px; flex:1; min-width:200px;';
-                    planDiv.innerHTML = \`
-                        <div style="font-weight:700; margin-bottom:8px; color:#2d7aff;">\${plan.name} (\${id})</div>
-                        <div>💰 \${plan.price === 0 ? 'مجاني' : plan.price + '$'}</div>
-                        <div>💾 \${(plan.storage / 1024).toFixed(0)} GB</div>
-                        <div>🧠 \${plan.ram} MB</div>
-                        <div>🖥 \${plan.cpu} نواة</div>
-                        <div>📦 حد أقصى: \${plan.max_servers} سيرفر</div>
-                    \`;
+                    planDiv.innerHTML = `
+                        <div style="font-weight:700; margin-bottom:8px; color:#2d7aff;">${plan.name} (${id})</div>
+                        <div>💰 ${plan.price === 0 ? 'مجاني' : plan.price + '$'}</div>
+                        <div>💾 ${(plan.storage / 1024).toFixed(0)} GB</div>
+                        <div>🧠 ${plan.ram} MB</div>
+                        <div>🖥 ${plan.cpu} نواة</div>
+                        <div>📦 حد أقصى: ${plan.max_servers} سيرفر</div>
+                    `;
                     container.appendChild(planDiv);
                 }
             }
@@ -1486,7 +1486,7 @@ const ADMIN_HTML_CONTENT = `<!DOCTYPE html>
         } catch(e) { showToast('❌ خطأ في الاتصال', 'error'); }
     }
     async function deleteUser(username) {
-        if (!confirm(\`حذف المستخدم "\${username}" نهائياً؟\`)) return;
+        if (!confirm(`حذف المستخدم "${username}" نهائياً؟`)) return;
         try {
             const res = await fetch('/api/admin/delete-user', {
                 method: 'POST',
@@ -1502,9 +1502,9 @@ const ADMIN_HTML_CONTENT = `<!DOCTYPE html>
         } catch(e) { showToast('❌ خطأ', 'error'); }
     }
     async function deleteServer(folder) {
-        if (!confirm(\`حذف السيرفر نهائياً؟\`)) return;
+        if (!confirm(`حذف السيرفر نهائياً؟`)) return;
         try {
-            const res = await fetch(\`/api/server/action/\${folder}/delete\`, { method: 'POST' });
+            const res = await fetch(`/api/server/action/${folder}/delete`, { method: 'POST' });
             const data = await res.json();
             if (data.success) {
                 showToast('🗑️ تم حذف السيرفر', 'success');
@@ -1875,7 +1875,7 @@ setInterval(() => {
         for (const [folder, srv] of Object.entries(db.servers || {})) {
             if (srv.status === "Running" && srv.pid) {
                 try {
-                    process.kill(srv.pid, 0); // Check if process exists
+                    process.kill(srv.pid, 0);
                 } catch (e) {
                     restartServer(folder);
                 }
@@ -2093,7 +2093,6 @@ app.post('/api/admin/add-plan', (req, res) => {
 });
 
 app.get('/api/system/metrics', (req, res) => {
-    const cpus = require('os').cpus();
     let cpuUsage = Math.floor(Math.random() * 20) + 10;
     const totalMem = require('os').totalmem();
     const freeMem = require('os').freemem();
@@ -2868,7 +2867,6 @@ function runTelegramBot() {
 
         bot.action("admin_stats", async (ctx) => {
             await ctx.answerCbQuery();
-            let cpus = require('os').cpus();
             let cpu = Math.floor(Math.random() * 20) + 10;
             let totalMem = require('os').totalmem();
             let freeMem = require('os').freemem();
@@ -2888,9 +2886,9 @@ function runTelegramBot() {
                     api_key: apiKey, folder: folder, action: action
                 });
                 let data = resp.data;
-                await ctx.answerCallQuery((data && data.success ? data.message : "فشل العملية").substring(0, 200));
+                await ctx.answerCbQuery((data && data.success ? data.message : "فشل العملية").substring(0, 200));
             } catch (e) {
-                await ctx.answerCallQuery("❌ خطأ في الاتصال");
+                await ctx.answerCbQuery("❌ خطأ في الاتصال");
             }
         });
 
