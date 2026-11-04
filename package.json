@@ -1,7 +1,7 @@
 {
-  "name": "ziad-host",
-  "version": "1.0.0",
-  "description": "ZIAD HOST - نظام استضافة متطور مع لوحة تحكم وإدارة وبوت تيليجرام مدمج",
+  "name": "ziad-host-js",
+  "version": "2.0.0",
+  "description": "𝗘𝗛𝗔𝗕 𝐇𝐎𝐒𝐓 - نظام استضافة متطور مع لوحة تحكم وإدارة وبوت تيليجرام مدمج (Node.js)",
   "main": "index.js",
   "scripts": {
     "start": "node index.js"
